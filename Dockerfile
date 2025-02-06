@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-slim
+FROM amazoncorretto:17
 
 EXPOSE 8080
 ADD springbootapp.jar springbootapp.jar
