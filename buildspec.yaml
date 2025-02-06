@@ -1,0 +1,41 @@
+version: 0.2
+# https://docs.aws.amazon.com/zh_cn/codebuild/latest/userguide/build-env-ref-env-vars.html
+env:
+  variables:
+    REPOSITORY_URI: "058264261029.dkr.ecr.us-east-1.amazonaws.com/springbootapp"
+
+phases:
+  pre_build:
+    commands:
+      - echo "Logging in to Amazon ECR..."
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $REPOSITORY_URI
+
+  build:
+    commands:
+      - echo "Building the Docker image..."
+      - echo "CODEBUILD_RESOLVED_SOURCE_VERSION= $CODEBUILD_RESOLVED_SOURCE_VERSION"
+      - docker build -t $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION .  # 构建 Docker 镜像
+
+  post_build:
+    commands:
+      - echo "Pushing the Docker image to ECR..."
+      - docker push $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION  # 推送镜像到 ECR
+      - echo "Writing image details to file..."
+      - printf '{"ImageURI":"%s"}' "$REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION" > imageDetail.json
+      - echo "Updating task definition JSON with image URI..."
+      - sed -i 's|IMAGE_NAME|'$REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION'|g' taskdef.json
+
+# https://docs.aws.amazon.com/codepipeline/latest/userguide/file-reference.html
+artifacts:
+  files:
+    - 'image*.json'
+    - 'appspec.yaml'
+    - 'taskdef.json'
+  secondary-artifacts:
+    DefinitionArtifact:
+      files:
+        - appspec.yaml
+        - taskdef.json
+    ImageArtifact:
+      files:
+        - imageDetail.json
