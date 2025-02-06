@@ -7,3 +7,4 @@ aws ecs execute-command \
     --interactive \
     --command "/bin/sh"
 ```
+# test trigger cicd
