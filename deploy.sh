@@ -11,7 +11,7 @@ if [ "$1" = "build" ];then
     sh mvn clean install
 elif [ "$1" = "test" ];then
     echo $SERVICE_NAME
-    find ../target/ -type f \( -name "*.jar" -not -name "*sources.jar" \) -exec cp {} ../deploy/$SERVICE_NAME.jar \;
+    find ./target/ -type f \( -name "*.jar" -not -name "*sources.jar" \) -exec cp {} ./$SERVICE_NAME.jar \;
 elif [ "$1" = "dockerize" ];then
     find ../target/ -type f \( -name "*.jar" -not -name "*sources.jar" \) -exec cp {} ../deploy/$SERVICE_NAME.jar \;
 #     # 检查仓库是否存在

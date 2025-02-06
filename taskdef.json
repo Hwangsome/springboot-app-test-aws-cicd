@@ -1,0 +1,47 @@
+{
+  "family": "springboot-app",
+  "containerDefinitions": [
+    {
+      "name": "springboot-app",
+      "image": "<IMAGE1_NAME>",
+      "cpu": 512,
+      "memory": 1024,
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "hostPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "mountPoints": [],
+      "volumesFrom": [],
+      "linuxParameters": {
+        "initProcessEnabled": true
+      },
+      "startTimeout": 30,
+      "stopTimeout": 120,
+      "user": "0",
+      "privileged": false,
+      "readonlyRootFilesystem": false,
+      "interactive": false,
+      "pseudoTerminal": false,
+      "systemControls": []
+    }
+  ],
+  "taskRoleArn": "arn:aws:iam::058264261029:role/springboot-app-tasks-20250206084926521400000007",
+  "executionRoleArn": "arn:aws:iam::058264261029:role/springboot-app-20250206084926520500000005",
+  "networkMode": "awsvpc",
+  "volumes": [],
+  "placementConstraints": [],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "1024",
+  "memory": "4096",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  }
+}
