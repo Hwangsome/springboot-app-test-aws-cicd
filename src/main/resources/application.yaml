@@ -1,0 +1,9 @@
+management:
+  endpoints:
+    web:
+      base-path: /
+    enabled-by-default: false
+  endpoint:
+    health:
+      show-details: always
+      access: read_only
