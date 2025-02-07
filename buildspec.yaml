@@ -21,7 +21,8 @@ phases:
       - echo "Pushing the Docker image to ECR..."
       - docker push $REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION  # 推送镜像到 ECR
       - echo "Writing image details to file..."
-      - printf '{"ImageURI":"%s"}' "$REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION" > imageDetail.json
+#      - printf '{"ImageURI":"%s"}' "$REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION" > imageDetail.json
+      - printf '[{"name":"springboot-app","imageUri":"%s"}]' "$REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION" > imagedefinitions.json
       - echo "Updating task definition JSON with image URI..."
       - sed -i 's|IMAGE1_NAME|'$REPOSITORY_URI:$CODEBUILD_RESOLVED_SOURCE_VERSION'|g' taskdef.json
 
@@ -38,4 +39,5 @@ artifacts:
         - taskdef.json
     ImageArtifact:
       files:
-        - imageDetail.json
+#        - imageDetail.json
+        - imagedefinitions.json
